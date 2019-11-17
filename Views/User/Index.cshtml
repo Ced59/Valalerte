@@ -4,9 +4,9 @@
 }
 
 
-<h1 class="text-center mt-4 mb-4">Bienvenue @Model.Firstname @Model.Name</h1>
+<h1 class="text-center mt-4 mb-4">Bienvenue @Model.User.Firstname @Model.User.Name</h1>
 
-<p class="text-center">Vous êtes connecté en tant que @Model.Role <br /><a class="justify-content-center" asp-area="" asp-controller="User" asp-action="Logout">Se déconnecter</a></p>
+<p class="text-center">Vous êtes connecté en tant que @Model.User.Role <br /><a class="justify-content-center" asp-area="" asp-controller="User" asp-action="Logout">Se déconnecter</a></p>
 
 
 
@@ -16,10 +16,22 @@
         <h5>Liste de vos formations:</h5>
     </div>
     <div class="card-body">
-        test
+        @if (Model.Formations.Count == 0)
+        {
+            <p>Pas de formation enregistrée...</p>
+        }
+        else
+        {
+            <ul>
+                @foreach (Formation f in Model.Formations)
+                {
+                    <li>@f.Name</li>
+                }
+            </ul>
+        }
     </div>
 
-    @if ((Model.Role == "Admin") || (Model.Role == "Directeur"))
+    @if ((Model.User.Role == "Admin") || (Model.User.Role == "Directeur"))
     {
         <div class="card-footer">
             <a asp-area="" asp-controller="Formation" asp-action="AddFormation">Ajouter une formation</a>

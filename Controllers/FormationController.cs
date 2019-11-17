@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using ValAlerte.Tools;
+using ValarAlerte.Models;
+using ValAlerte.ViewModels;
 
 namespace ValAlerte.Controllers
 {
@@ -18,6 +20,29 @@ namespace ValAlerte.Controllers
         public IActionResult AddFormation()
         {
             UserConnect(ViewBag);
+            User u = createUserWithViewBag();
+
+            if (!ViewBag.logged)
+            {
+                List<string> errors = new List<string>();
+                errors.Add(ErrorMessages.Disconnect());
+
+                return RedirectToRoute(new { controller = "Home", action = "IndexError", errors = errors, mail = "" });
+            }
+            Formation f = new Formation();
+
+            List<Formation> formations = new List<Formation>();
+            formations = f.getFormations();
+
+            FormationUserViewModel model = new FormationUserViewModel { Formations = formations, User = u };
+
+            return View("AddFormation", model);
+        }
+
+        public IActionResult Add(string name)
+        {
+            UserConnect(ViewBag);
+            User u = createUserWithViewBag();
 
             if (!ViewBag.logged)
             {
@@ -27,8 +52,19 @@ namespace ValAlerte.Controllers
                 return RedirectToRoute(new { controller = "Home", action = "IndexError", errors = errors, mail = "" });
             }
 
-            return View("AddFormation");
+            Formation f = new Formation { Name = name };
+
+            f = f.Add();
+
+            List<Formation> formations = new List<Formation>();
+            formations = f.getFormations();
+
+            FormationUserViewModel model = new FormationUserViewModel { Formations = formations, User = u };
+                
+            return View("AddFormation", model);
         }
+
+    
 
 
         private void UserConnect(dynamic v)
@@ -49,6 +85,18 @@ namespace ValAlerte.Controllers
             {
                 v.Logged = false;
             }
+        }
+
+        private User createUserWithViewBag()
+        {
+            return new User
+            {
+                Firstname = ViewBag.FirstName,
+                Id = Convert.ToInt32(ViewBag.Id),
+                Name = ViewBag.Name,
+                MailAdress = ViewBag.MailAdress,
+                Role = ViewBag.Role
+            };
         }
 
 

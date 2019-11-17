@@ -30,6 +30,40 @@ namespace ValarAlerte.Tools.Bdds.BddValalerte
             }
         }
 
+        internal List<Formation> getFormations()
+        {
+            List<Formation> formations = new List<Formation>();
+
+            IDbCommand command = new SqlCommand("SELECT * FROM Formations", (SqlConnection)ConnectionValalerte.Instance);
+            ConnectionValalerte.Instance.Open();
+            SqlDataReader reader = (SqlDataReader)command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Formation f = new Formation { IdFormation = reader.GetInt32(0), Name = reader.GetString(1) };
+                formations.Add(f);
+            }
+            reader.Close();
+            command.Dispose();
+            ConnectionValalerte.Instance.Close();
+
+            // ICI RAJOUTER COMMANDES POUR RECUPERER SESSIONS ET STUDENTS
+
+            return formations;
+        }
+
+
+        internal Formation AddFormation(Formation f)
+        {
+            IDbCommand command = new SqlCommand("INSERT INTO Formations (Nom) OUTPUT INSERTED.ID VALUES (@Nom) ", (SqlConnection)ConnectionValalerte.Instance);
+            command.Parameters.Add(new SqlParameter("@Nom", SqlDbType.VarChar) { Value = f.Name });
+            ConnectionValalerte.Instance.Open();
+            f.IdFormation = (int)command.ExecuteScalar();
+            command.Dispose();
+            ConnectionValalerte.Instance.Close();
+            return f;
+        }
+
         internal bool verifUserExist(User user)
         {
             bool exist = false;

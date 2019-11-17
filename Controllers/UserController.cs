@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ValAlerte.Tools;
+using ValAlerte.ViewModels;
 using ValarAlerte.Models;
 
 namespace ValarAlerte.Controllers
@@ -89,9 +90,13 @@ namespace ValarAlerte.Controllers
                 Role = ViewBag.Role 
             };
 
-            
+            Formation f = new Formation();
+            List<Formation> formations = new List<Formation>();
+            formations = f.getFormations();
 
-            return View("Index", u);
+            FormationUserViewModel model = new FormationUserViewModel { Formations = formations, User = u };
+
+            return View("Index", model);
         }
 
         public IActionResult Logout()
