@@ -22,5 +22,9 @@ namespace ValarAlerte.Models
 
         public enum Role {Directeur, Formateur, Etudiant};
 
+        internal bool verifUser()
+        {
+            return BddValalerte.Instance.verifUser(this);
+        }
     }
 }
