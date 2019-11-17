@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ValAlerte.Tools;
 using ValarAlerte.Models;
 
 namespace ValarAlerte.Controllers
@@ -19,11 +20,11 @@ namespace ValarAlerte.Controllers
 
             if (mail == null)
             {
-                errors.Add("Merci de saisir votre adresse Mail.");
+                errors.Add(ErrorMessages.MissMail());
             }
             if (password == null)
             {
-                errors.Add("Merci de saisir votre Mot de Passe.");
+                errors.Add(ErrorMessages.MissMdp());
             }
 
             if (errors.Count > 0)
@@ -37,7 +38,7 @@ namespace ValarAlerte.Controllers
 
                 if (!r.IsMatch(mail))
                 {
-                    errors.Add("Cette adresse mail n'est pas valide.");
+                    errors.Add(ErrorMessages.InvalidMail());
 
                     return RedirectToRoute(new { controller = "Home", action = "IndexError", errors = errors, mail = mail });
                 }
@@ -47,7 +48,7 @@ namespace ValarAlerte.Controllers
 
                 if (!u.verifUserExist())
                 {
-                    errors.Add("Il n'y a pas d'utilisateur avec cette adresse mail / mot de passe.");
+                    errors.Add(ErrorMessages.FailedLogin());
 
                     return RedirectToRoute(new { controller = "Home", action = "IndexError", errors = errors, mail = mail });
                 }
@@ -56,7 +57,7 @@ namespace ValarAlerte.Controllers
 
                 if (u.Name == null)
                 {
-                    errors.Add("Il n'y a pas d'utilisateur avec cette adresse mail / mot de passe.");
+                    errors.Add(ErrorMessages.FailedLogin());
 
                     return RedirectToRoute(new { controller = "Home", action = "IndexError", errors = errors, mail = mail });
                 }
