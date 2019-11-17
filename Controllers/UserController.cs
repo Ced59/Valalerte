@@ -82,15 +82,22 @@ namespace ValarAlerte.Controllers
             User u = new User 
             { 
                 Firstname = ViewBag.FirstName, 
-                Id = ViewBag.Id, 
+                Id = Convert.ToInt32(ViewBag.Id), 
                 Name = ViewBag.Name, 
                 MailAdress = ViewBag.MailAdress,
                 Role = ViewBag.Role 
             };
 
+            
 
+            return View("Index", u);
+        }
 
-            return View();
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+
+            return RedirectToRoute(new { controller = "Home", action = "Index" });
         }
 
 

@@ -20,7 +20,7 @@
 <body>
     <div class="container">
 
-        <img class="card-img offset-md-4 col-md-4" src="~/images/LOGO-VALAREP-300x162.jpg" alt="logo" />
+        <img class="card-img offset-md-5 col-md-2" src="~/images/LOGO-VALAREP-300x162.jpg" alt="logo" />
 
         <h1 class="text-center mt-4 mb-4">Bienvenue sur le portail ValAlerte</h1>
 
@@ -48,7 +48,7 @@
             }
 
 
-            <form class="form-group" asp-controller="User" asp-action="Login" method="post">
+            <form class="form-group card p-2" asp-controller="User" asp-action="Login" method="post">
                 <div class="form-group">
                     <label>Adresse Mail : <span class="text-red">*</span></label>
                     @if (Model != null)

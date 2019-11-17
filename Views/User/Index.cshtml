@@ -1,15 +1,32 @@
 ﻿
 @{
-    Layout = null;
+    ViewData["Title"] = "Bienvenue";
 }
 
-<!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-</body>
-</html>
+<h1 class="text-center mt-4 mb-4">Bienvenue @Model.Firstname @Model.Name</h1>
+
+<p class="text-center">Vous êtes connecté en tant que @Model.Role <br /><a class="justify-content-center" asp-area="" asp-controller="User" asp-action="Logout">Se déconnecter</a></p>
+
+
+
+<div class="col-md-4 col-xs-12 card">
+
+    <div class="card-header">
+        <h5>Liste de vos formations:</h5>
+    </div>
+    <div class="card-body">
+        test
+    </div>
+
+    @if ((Model.Role == "Admin") || (Model.Role == "Directeur"))
+    {
+        <div class="card-footer">
+            <a asp-area="" asp-controller="Formation" asp-action="AddFormation">Ajouter une formation</a>
+        </div>
+    }
+
+
+
+</div>
+

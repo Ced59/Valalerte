@@ -15,6 +15,7 @@ namespace ValarAlerte.Models
         private string mailAdress;
         private string password;
         private string role;
+        private List<Formation> formations;
 
         public int Id { get => id; set => id = value; }
         public string Name { get => name; set => name = value; }
@@ -22,7 +23,7 @@ namespace ValarAlerte.Models
         public string MailAdress { get => mailAdress; set => mailAdress = value; }
         public string Password { get => password; set => password = value; }
         public string Role { get => role; set => role = value; }
-
+        public List<Formation> Formations { get => formations; set => formations = value; }
 
         internal bool verifUserExist()
         {
