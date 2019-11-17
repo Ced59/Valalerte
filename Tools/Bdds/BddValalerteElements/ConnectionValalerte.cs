@@ -19,7 +19,7 @@ namespace ValarAlerte.Tools.Bdds.BddValalerte
                     if (_instance == null)
                     {
 
-                        _instance = new SqlConnection(PassConnection.ConnectionBddSerie());
+                        _instance = new SqlConnection(PassConnection.ConnectionBddValalerte());
 
                         try
                         {
@@ -28,7 +28,7 @@ namespace ValarAlerte.Tools.Bdds.BddValalerte
                         }
                         catch (System.Data.SqlClient.SqlException)
                         {
-                            _instance = new SqlConnection(@"Data Source=226114-18021;Initial Catalog=db776017654;Integrated Security=True");
+                            _instance = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + "\"D:\\Projets VALAREP\\ValarAlerte\\Bdd\\Valalerte.mdf\";Integrated Security=True;Connect Timeout=30");
 
                         }
 
@@ -44,4 +44,6 @@ namespace ValarAlerte.Tools.Bdds.BddValalerte
         }
     }
 }
-}
+
+
+

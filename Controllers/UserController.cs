@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ValarAlerte.Models;
 
@@ -12,7 +13,7 @@ namespace ValarAlerte.Controllers
     {
 
         [HttpPost]
-        public IActionResult Index(string mail, string password)
+        public IActionResult Login(string mail, string password)
         {
             List<string> errors = new List<string>();
 
@@ -44,17 +45,74 @@ namespace ValarAlerte.Controllers
 
                 User u = new User { MailAdress = mail, Password = password };
 
-                if (!u.verifUser())
+                if (!u.verifUserExist())
                 {
                     errors.Add("Il n'y a pas d'utilisateur avec cette adresse mail / mot de passe.");
 
                     return RedirectToRoute(new { controller = "Home", action = "IndexError", errors = errors, mail = mail });
                 }
 
-                return View();
+                u = u.login();
+
+                if (u.Name == null)
+                {
+                    errors.Add("Il n'y a pas d'utilisateur avec cette adresse mail / mot de passe.");
+
+                    return RedirectToRoute(new { controller = "Home", action = "IndexError", errors = errors, mail = mail });
+                }
+
+                else
+                {
+                    HttpContext.Session.SetString("logged", "true");
+                    HttpContext.Session.SetString("name", u.Name);
+                    HttpContext.Session.SetString("idUser", u.Id.ToString());
+                    HttpContext.Session.SetString("role", u.Role);
+                    HttpContext.Session.SetString("firstname", u.Firstname);
+                    HttpContext.Session.SetString("mail", u.MailAdress);
+
+                    return RedirectToRoute(new { controller = "User", action = "Index" });
+                }              
+            }           
+        }
+
+        public IActionResult Index()
+        {
+            UserConnect(ViewBag);
+
+            User u = new User 
+            { 
+                Firstname = ViewBag.FirstName, 
+                Id = ViewBag.Id, 
+                Name = ViewBag.Name, 
+                MailAdress = ViewBag.MailAdress,
+                Role = ViewBag.Role 
+            };
+
+
+
+            return View();
+        }
+
+
+
+        private void UserConnect(dynamic v)
+        {
+            bool? logged = Convert.ToBoolean(HttpContext.Session.GetString("logged"));
+            if (logged == true)
+            {
+                v.Logged = logged;
+                v.Name = HttpContext.Session.GetString("name");
+                v.Id = HttpContext.Session.GetString("idUser");
+                v.MailAdress = HttpContext.Session.GetString("mail");
+                v.Role = HttpContext.Session.GetString("role");
+                v.FirstName = HttpContext.Session.GetString("firstname");
+                
             }
 
-            
+            else
+            {
+                v.Logged = false;
+            }
         }
     }
 }
