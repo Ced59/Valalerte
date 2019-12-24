@@ -28,7 +28,15 @@ namespace ValarAlerte.Tools.Bdds.BddValalerte
                         }
                         catch (System.Data.SqlClient.SqlException)
                         {
-                            _instance = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + "\"D:\\Projets VALAREP\\ValarAlerte\\Bdd\\Valalerte.mdf\";Integrated Security=True;Connect Timeout=30");
+                            try
+                            {
+                                _instance = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + "\"E:\\Projets VALAREP\\ValarAlerte\\Bdd\\Valalerte.mdf\";Integrated Security=True;Connect Timeout=30");
+                            }
+                            catch
+                            {
+                                _instance = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=" + "\"D:\\Projets VALAREP\\ValarAlerte\\Bdd\\Valalerte.mdf\";Integrated Security=True;Connect Timeout=30");
+                            }
+                           
 
                         }
 

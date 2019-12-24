@@ -9,10 +9,12 @@ namespace ValarAlerte.Models
         private DateTime dateDebut;
         private DateTime dateFin;
         private List<User> students;
+        private int idFormation;
 
         public int IdSession { get => idSession; set => idSession = value; }
         public DateTime DateDebut { get => dateDebut; set => dateDebut = value; }
         public DateTime DateFin { get => dateFin; set => dateFin = value; }
         public List<User> Students { get => students; set => students = value; }
+        public int IdFormation { get => idFormation; set => idFormation = value; }
     }
 }

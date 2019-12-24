@@ -81,22 +81,35 @@ namespace ValarAlerte.Controllers
         {
             UserConnect(ViewBag);
 
-            User u = new User 
-            { 
-                Firstname = ViewBag.FirstName, 
-                Id = Convert.ToInt32(ViewBag.Id), 
-                Name = ViewBag.Name, 
-                MailAdress = ViewBag.MailAdress,
-                Role = ViewBag.Role 
-            };
+            if (!ViewBag.logged)
+            {
+                HttpContext.Session.Clear();
 
-            Formation f = new Formation();
-            List<Formation> formations = new List<Formation>();
-            formations = f.getFormations();
+                List<string> errors = new List<string>();
+                errors.Add("Vous avez été inactif trop longtemps. Veuillez vous reconnecter.");
 
-            FormationUserViewModel model = new FormationUserViewModel { Formations = formations, User = u };
+                return RedirectToRoute(new { controller = "Home", action = "IndexError", errors = errors, mail = "" });
+            }
+            else
+            {
+                User u = new User
+                {
+                    Firstname = ViewBag.FirstName,
+                    Id = Convert.ToInt32(ViewBag.Id),
+                    Name = ViewBag.Name,
+                    MailAdress = ViewBag.MailAdress,
+                    Role = ViewBag.Role
+                };
 
-            return View("Index", model);
+                Formation f = new Formation();
+                List<Formation> formations = new List<Formation>();
+                formations = f.getFormations();
+
+                FormationUserViewModel model = new FormationUserViewModel { Formations = formations, User = u };
+
+                return View("Index", model);
+            }
+
         }
 
         public IActionResult Logout()
@@ -111,7 +124,7 @@ namespace ValarAlerte.Controllers
         private void UserConnect(dynamic v)
         {
             bool? logged = Convert.ToBoolean(HttpContext.Session.GetString("logged"));
-            if (logged == true)
+            if ((bool)logged)
             {
                 v.Logged = logged;
                 v.Name = HttpContext.Session.GetString("name");

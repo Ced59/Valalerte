@@ -22,9 +22,6 @@ namespace ValarAlerte.Controllers
 
             return View("Index", error);
         }
-
-        
-
        
     }
 }

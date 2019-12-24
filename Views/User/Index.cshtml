@@ -25,7 +25,25 @@
             <ul>
                 @foreach (Formation f in Model.Formations)
                 {
-                    <li>@f.Name</li>
+                    <li>
+                        @f.Name <br />
+
+
+                        @if (Model.User.Role == "Admin" || Model.User.Role == "Directeur")
+                        {
+                            <form asp-area="" asp-controller="Formation" asp-action="Edit" asp-route-id="@f.IdFormation" class="align-content-center">
+                                <button type="submit" class="btn btn-primary text-center">Modifier</button>
+                                <button type="button" id="btn-@f.IdFormation" class="btn btn-primary text-center">Voir</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form class="align-content-center">
+                                <button type="button" id="btn-@f.IdFormation" class="btn btn-primary text-center">Voir</button>
+                            </form>
+                        }
+                        <br />
+                    </li>
                 }
             </ul>
         }
